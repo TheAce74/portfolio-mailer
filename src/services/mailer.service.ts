@@ -3,7 +3,9 @@ import { env } from '@/config/env';
 import { ContactInput } from '@/utils/validation';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
