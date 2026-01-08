@@ -4,8 +4,8 @@ import { ContactInput } from '@/utils/validation';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false, // Use STARTTLS
   logger: true,
   debug: true,
   family: 4, // Force IPv4
