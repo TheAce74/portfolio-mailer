@@ -5,12 +5,15 @@ import { ContactInput } from '@/utils/validation';
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
-  secure: true, // true for 465, false for other ports
+  secure: true,
+  logger: true,
+  debug: true,
+  family: 4, // Force IPv4
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
   },
-});
+} as nodemailer.TransportOptions);
 
 export const sendContactEmail = async (data: ContactInput) => {
   const html = `
