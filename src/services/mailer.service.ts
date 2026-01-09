@@ -4,13 +4,17 @@ import { ContactInput } from '@/utils/validation';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
   },
   family: 4,
+  tls: {
+    ciphers: 'SSLv3', // sometimes helps with older handshakes
+    rejectUnauthorized: false, // WARNING: Only for debugging, don't use in prod permanently
+  },
   connectionTimeout: 10000,
   greetingTimeout: 5000,
   socketTimeout: 10000,
