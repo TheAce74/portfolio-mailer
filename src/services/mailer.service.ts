@@ -4,11 +4,17 @@ import { ContactInput } from '@/utils/validation';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  port: 465,
+  secure: true,
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
   },
-});
+  family: 4,
+  connectionTimeout: 10000,
+  greetingTimeout: 5000,
+  socketTimeout: 10000,
+} as nodemailer.TransportOptions);
 
 export const sendContactEmail = async (data: ContactInput) => {
   const html = `
