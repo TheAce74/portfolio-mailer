@@ -1,24 +1,8 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { env } from '@/config/env';
 import { ContactInput } from '@/utils/validation';
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  port: 587,
-  secure: false,
-  auth: {
-    user: env.SMTP_USER,
-    pass: env.SMTP_PASS,
-  },
-  family: 4,
-  tls: {
-    ciphers: 'SSLv3', // sometimes helps with older handshakes
-    rejectUnauthorized: false, // WARNING: Only for debugging, don't use in prod permanently
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 5000,
-  socketTimeout: 10000,
-} as nodemailer.TransportOptions);
+const resend = new Resend(env.RESEND_API_KEY);
 
 export const sendContactEmail = async (data: ContactInput) => {
   const html = `
@@ -152,13 +136,18 @@ export const sendContactEmail = async (data: ContactInput) => {
     </html>
   `;
 
-  const info = await transporter.sendMail({
-    from: `Portfolio <${env.EMAIL_FROM}>`,
+  const { data: emailData, error } = await resend.emails.send({
+    from: `Portfolio Contact Form <${env.EMAIL_FROM}>`,
     to: env.EMAIL_TO,
     subject: `New Inquiry from ${data.name}`,
     html,
     text: `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'N/A'}\nBudget: ${data.budget || 'N/A'}\nMessage: ${data.message}`,
+    replyTo: data.email,
   });
 
-  return info;
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return emailData;
 };
