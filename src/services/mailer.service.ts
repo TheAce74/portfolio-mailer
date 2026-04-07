@@ -1,6 +1,6 @@
-import { Resend } from 'resend';
-import { env } from '@/config/env';
-import { ContactInput } from '@/utils/validation';
+import { Resend } from "resend";
+import { env } from "@/config/env";
+import { ContactInput } from "@/utils/validation";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
@@ -110,7 +110,7 @@ export const sendContactEmail = async (data: ContactInput) => {
           <div class="label">Phone</div>
           <div class="value">${data.phone}</div>
         </div>`
-            : ''
+            : ""
         }
 
         ${
@@ -120,7 +120,7 @@ export const sendContactEmail = async (data: ContactInput) => {
           <div class="label">Budget</div>
           <div class="value">$${data.budget}</div>
         </div>`
-            : ''
+            : ""
         }
 
         <div class="field">
@@ -141,7 +141,7 @@ export const sendContactEmail = async (data: ContactInput) => {
     to: env.EMAIL_TO,
     subject: `New Inquiry from ${data.name}`,
     html,
-    text: `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'N/A'}\nBudget: ${data.budget || 'N/A'}\nMessage: ${data.message}`,
+    text: `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || "N/A"}\nBudget: ${data.budget || "N/A"}\nMessage: ${data.message}`,
     replyTo: data.email,
   });
 
